@@ -1,4 +1,5 @@
 using System.Net.Http;
+using AzureADTenantPart2.Models.ConData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -34,5 +35,19 @@ namespace AzureADTenantPart2.Pages
 
         [Inject]
         protected SecurityService Security { get; set; }
+
+        //Overriding OnInitializedAsync method in code behind of index page which is our start page
+        protected override async Task OnInitializedAsync()
+        {
+            //get application current URL by accessing the BaseURI property of Navigation manager
+            var appURL = NavigationManager.BaseUri;
+            //call UserIsAccessingAssignedURL method of Security service
+            bool isRightURL = await Security.UserIsAccessingAssignedURL(NavigationManager);
+            //If method returns false redirect user to unauthorized page
+            if (isRightURL == false)
+            {
+                NavigationManager.NavigateTo("unauthorized", true);
+            }
+        }
     }
 }

@@ -49,5 +49,7 @@ namespace AzureADTenantPart2.Shared
                 Security.Logout();
             }
         }
+
+        
     }
 }
